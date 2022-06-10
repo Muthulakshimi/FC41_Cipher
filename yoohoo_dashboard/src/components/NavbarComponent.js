@@ -4,26 +4,17 @@ import { Navbar, Nav, Container } from "react-bootstrap";
 export const NavbarComponent = () => {
     return (
         <>
-            <Container>
-                {/* <Navbar bg="dark" variant="dark">
-                    <Navbar.Brand href="#home">Navbar</Navbar.Brand>
+            <Navbar bg="dark" variant="dark">
+                <Container>
+                    <Navbar.Brand href="/home">YOOHOO</Navbar.Brand>
                     <Nav className="me-auto">
-                        <Nav.Link href="#home">Home</Nav.Link>
-                        <Nav.Link href="#features">Features</Nav.Link>
-                        <Nav.Link href="#pricing">Pricing</Nav.Link>
+                        <Nav.Link href="/home">Home</Nav.Link>
+                        <Nav.Link href="/contacts">Contacts</Nav.Link>
+                        <Nav.Link href="/profile">Profile</Nav.Link>
+                        <Nav.Link href="/logout">Logout</Nav.Link>
                     </Nav>
-                </Navbar> */}
-                <Navbar bg="primary" variant="dark">
-                    <Container>
-                        <Navbar.Brand href="#home">Navbar</Navbar.Brand>
-                        <Nav className="me-auto">
-                            <Nav.Link href="#home">Home</Nav.Link>
-                            <Nav.Link href="#features">Features</Nav.Link>
-                            <Nav.Link href="#pricing">Pricing</Nav.Link>
-                        </Nav>
-                    </Container>
-                </Navbar>
-            </Container>
+                </Container>
+            </Navbar>
         </>
     );
 };
