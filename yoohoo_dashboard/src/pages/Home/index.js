@@ -3,10 +3,21 @@ import { Image, Button } from "react-bootstrap";
 import { useState, useEffect } from "react";
 import axios from "axios";
 import "../../App.css";
+// import { WebcamCapture } from "../../components/Webcam";
+
+import Webcam from "react-webcam";
 
 const Home = () => {
     const [lat, setLat] = useState("");
     const [long, setLong] = useState("");
+
+    const [image, setImage] = useState("");
+
+    const videoConstraints = {
+        width: 1280,
+        height: 720,
+        facingMode: "user",
+    };
 
     useEffect(() => {
         navigator.geolocation.getCurrentPosition(function (position) {
@@ -27,7 +38,7 @@ const Home = () => {
         console.log(formData);
         // axios({
         //     // Endpoint to send files
-        //     url: "http://localhost:8000/api/user/location",
+        //     url: "http://localhost:8000/api/user/image",
         //     method: "POST",
         //     headers: {
         //         "Content-Type": "application/json",
@@ -70,6 +81,25 @@ const Home = () => {
                 >
                     Location
                 </Button>
+
+                <Webcam
+                    audio={false}
+                    height={300}
+                    screenshotFormat="image/jpeg"
+                    width={300}
+                    videoConstraints={videoConstraints}
+                >
+                    {({ getScreenshot }) => (
+                        <button
+                            onClick={() => {
+                                const imageSrc = getScreenshot();
+                                setImage(imageSrc);
+                            }}
+                        >
+                            Capture photo
+                        </button>
+                    )}
+                </Webcam>
             </div>
         </div>
     );

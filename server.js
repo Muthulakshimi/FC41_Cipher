@@ -4,6 +4,7 @@ const db = require("./config/db");
 const cors = require("cors");
 const PORT = process.env.PORT || 5000;
 const userRoutes = require("./routes/userRoutes");
+const evidenceRoutes = require("./routes/evidenceRoute");
 const app = express();
 app.use(express.json());
 app.use(cors());
@@ -17,8 +18,9 @@ app.get("/another", (req, res) => {
     res.end("Its running here also");
 });
 
+app.use("/api/public/", express.static("/public/evidence"));
 app.use("/api/user", userRoutes);
-app.use("/api/evidence", evidenceRoute);
+app.use("/api/evidence", evidenceRoutes);
 
 app.listen(PORT, () => {
     console.log(`Server is running on : http://localhost:${PORT}`);

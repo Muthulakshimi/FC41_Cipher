@@ -1,12 +1,17 @@
 import React from "react";
-import { Form, Button, Container, Table } from "react-bootstrap";
+import { Form, Button, Container, Row, Col } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
+import { NavbarComponent } from "./NavbarComponent";
 
 export const Contact = () => {
     const [contact1, setContact1] = useState("");
     const [contact2, setContact2] = useState("");
     const [contact3, setContact3] = useState("");
+
+    const [email1, setEmail1] = useState("");
+    const [email2, setEmail2] = useState("");
+    const [email3, setEmail3] = useState("");
 
     const onChangeContact1 = (e) => {
         setContact1(e.target.value);
@@ -16,6 +21,16 @@ export const Contact = () => {
     };
     const onChangeContact3 = (e) => {
         setContact3(e.target.value);
+    };
+
+    const onChangeEmail1 = (e) => {
+        setEmail1(e.target.value);
+    };
+    const onChangeEmail2 = (e) => {
+        setEmail2(e.target.value);
+    };
+    const onChangeEmail3 = (e) => {
+        setEmail3(e.target.value);
     };
 
     const handleUpload = (e) => {
@@ -31,6 +46,9 @@ export const Contact = () => {
             contact1: contact1,
             contact2: contact2,
             contact3: contact3,
+            email1: email1,
+            email2: email2,
+            email3: email3,
         });
         console.log(formData);
         axios({
@@ -65,41 +83,105 @@ export const Contact = () => {
 
     return (
         <div>
-            <h3>Login Form</h3>
+            <NavbarComponent />
+            <h3>Contacts Form</h3>
             <Container>
                 <Form>
-                    <Form.Group className="mb-3" controlId="formBasicContact1">
-                        <Form.Label>Contact 1</Form.Label>
-                        <Form.Control
-                            type="tel"
-                            maxlength="10"
-                            value={contact1}
-                            onChange={onChangeContact1}
-                            placeholder="Enter Contact 1"
-                        />
-                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicContact1"
+                            >
+                                <Form.Label>Contact 1</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    maxlength="10"
+                                    value={contact1}
+                                    onChange={onChangeContact1}
+                                    placeholder="Enter Contact 1"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                            >
+                                <Form.Label>Email 1</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={email1}
+                                    onChange={onChangeEmail1}
+                                    placeholder="Enter Email 1"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-                    <Form.Group className="mb-3" controlId="formBasicContact2">
-                        <Form.Label>Contact 2</Form.Label>
-                        <Form.Control
-                            type="tel"
-                            maxlength="10"
-                            value={contact2}
-                            onChange={onChangeContact2}
-                            placeholder="Enter Contact 2"
-                        />
-                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicContact2"
+                            >
+                                <Form.Label>Contact 2</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    maxlength="10"
+                                    value={contact2}
+                                    onChange={onChangeContact2}
+                                    placeholder="Enter Contact 2"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                            >
+                                <Form.Label>Email 2</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={email2}
+                                    onChange={onChangeEmail2}
+                                    placeholder="Enter Email 2"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
-                    <Form.Group className="mb-3" controlId="formBasicContact3">
-                        <Form.Label>Contact 3</Form.Label>
-                        <Form.Control
-                            type="tel"
-                            maxlength="10"
-                            value={contact3}
-                            onChange={onChangeContact3}
-                            placeholder="Enter Contact 3"
-                        />
-                    </Form.Group>
+                    <Row>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicContact3"
+                            >
+                                <Form.Label>Contact 3</Form.Label>
+                                <Form.Control
+                                    type="tel"
+                                    maxlength="10"
+                                    value={contact3}
+                                    onChange={onChangeContact3}
+                                    placeholder="Enter Contact 3"
+                                />
+                            </Form.Group>
+                        </Col>
+                        <Col>
+                            <Form.Group
+                                className="mb-3"
+                                controlId="formBasicEmail"
+                            >
+                                <Form.Label>Email 3</Form.Label>
+                                <Form.Control
+                                    type="email"
+                                    value={email3}
+                                    onChange={onChangeEmail3}
+                                    placeholder="Enter Email 3"
+                                />
+                            </Form.Group>
+                        </Col>
+                    </Row>
 
                     <Button
                         variant="primary"
@@ -108,40 +190,6 @@ export const Contact = () => {
                     >
                         Submit
                     </Button>
-                </Form>
-            </Container>
-
-            <Container>
-                <Form>
-                    <Table striped bordered hover>
-                        <thead>
-                            <tr>
-                                <th>Sl No</th>
-                                <th>First Name</th>
-                                <th>Last Name</th>
-                                <th>Username</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>1</td>
-                                <td>Mark</td>
-                                <td>Otto</td>
-                                <td>@mdo</td>
-                            </tr>
-                            <tr>
-                                <td>2</td>
-                                <td>Jacob</td>
-                                <td>Thornton</td>
-                                <td>@fat</td>
-                            </tr>
-                            <tr>
-                                <td>3</td>
-                                <td colSpan={2}>Larry the Bird</td>
-                                <td>@twitter</td>
-                            </tr>
-                        </tbody>
-                    </Table>
                 </Form>
             </Container>
         </div>
