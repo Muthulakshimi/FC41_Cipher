@@ -2,13 +2,22 @@ import React from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
+import { Redirect } from "react-router-dom";
 
 export const Signup = () => {
+    const [name, setName] = useState("");
     const [email, setEmail] = useState("");
+    const [phone, setPhone] = useState("");
     const [password, setPassword] = useState("");
 
+    const onChangeUserName = (e) => {
+        setName(e.target.value);
+    };
     const onChangeUserEmail = (e) => {
         setEmail(e.target.value);
+    };
+    const onChangeUserPhone = (e) => {
+        setPhone(e.target.value);
     };
     const onChangeUserPassword = (e) => {
         setPassword(e.target.value);
@@ -23,38 +32,42 @@ export const Signup = () => {
         // // Adding files to the formdata
         // formData.append("image", newfiles);
         // formData.append("name", "Name");
-        let formData = JSON.stringify({ email: email, password: password });
+        let formData = JSON.stringify({
+            email: email,
+            password: password,
+            name: name,
+            phone: phone,
+        });
         console.log(formData);
-        // axios({
-        //     // Endpoint to send files
-        //     url: "http://localhost:8080/files",
-        //     method: "POST",
-        //     headers: {
-        //         "Content-Type": "application/json",
-        //         // Add any auth token here
-        //         // authorization: "your token comes here",
-        //     },
+        axios({
+            // Endpoint to send files
+            url: "http://localhost:8000/api/user/signup",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
 
-        //     // Attaching the form data
-        //     data: formData,
-        // })
-        //     // Handle the response from backend here
-        //     .then((res) => {
-        //         // localStorage.setItem("access_token",res.)
-        //         console.log(res.data);
-        //     })
+            // Attaching the form data
+            data: formData,
+        })
+            // Handle the response from backend here
+            .then((res) => {
+                localStorage.setItem("data", JSON.stringify(res.data));
+                console.log(res.data);
+                // history.push("/login");
+            })
 
-        //     // Catch errors if any
-        //     .catch((error) => {
-        //         if (error.response) {
-        //             this.errors(error.response.message);
-        //         } else if (error.request) {
-        //             console.log("error.request");
-        //         } else {
-        //             console.log("Error", error);
-        //         }
-        //         console.log("rejected");
-        //     });
+            // Catch errors if any
+            .catch((error) => {
+                if (error.response) {
+                    this.errors(error.response.message);
+                } else if (error.request) {
+                    console.log("error.request");
+                } else {
+                    console.log("Error", error);
+                }
+                console.log("rejected");
+            });
     };
 
     return (
@@ -62,6 +75,16 @@ export const Signup = () => {
             <h3>Signup Form</h3>
             <Container>
                 <Form>
+                    <Form.Group className="mb-3" controlId="formBasicUserName">
+                        <Form.Label>User Name</Form.Label>
+                        <Form.Control
+                            type="text"
+                            value={name}
+                            onChange={onChangeUserName}
+                            placeholder="User Name"
+                        />
+                    </Form.Group>
+
                     <Form.Group className="mb-3" controlId="formBasicEmail">
                         <Form.Label>Email address</Form.Label>
                         <Form.Control
@@ -73,6 +96,17 @@ export const Signup = () => {
                         <Form.Text className="text-muted">
                             We'll never share your email with anyone else.
                         </Form.Text>
+                    </Form.Group>
+
+                    <Form.Group className="mb-3" controlId="formBasicPhone">
+                        <Form.Label>Phone</Form.Label>
+                        <Form.Control
+                            type="tel"
+                            value={phone}
+                            maxlength="10"
+                            onChange={onChangeUserPhone}
+                            placeholder="Phone"
+                        />
                     </Form.Group>
 
                     <Form.Group className="mb-3" controlId="formBasicPassword">

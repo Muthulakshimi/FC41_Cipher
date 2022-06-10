@@ -6,12 +6,12 @@ const registerationValidation = (req, res, next) => {
         name: { type: "string" },
         email: { type: "email" },
         phone: { type: "number" },
-        password: { type: "string", min: 8 },
+        password: { type: "string" },
     };
 
     const validate = v.validate(req.body, schema);
 
-    if (validate !== true) {
+    if (!validate) {
         return res.status(400).json({
             message: "Validation error",
             error: validate,
@@ -21,4 +21,22 @@ const registerationValidation = (req, res, next) => {
     }
 };
 
-module.exports = { registerationValidation };
+const loginValidation = (req, res, next) => {
+    const schema = {
+        email: { type: "email" },
+        password: { type: "string" },
+    };
+
+    const validate = v.validate(req.body, schema);
+
+    if (!validate) {
+        return res.status(400).json({
+            message: "Validation error",
+            error: validate,
+        });
+    } else {
+        next();
+    }
+};
+
+module.exports = { registerationValidation, loginValidation };

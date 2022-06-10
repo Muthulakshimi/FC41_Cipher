@@ -4,6 +4,7 @@ import { Login } from "./components/Login";
 import Layout from "./Layout";
 import Home from "./pages/Home";
 import { Signup } from "./components/Signup";
+import { Contact } from "./components/Contact";
 
 function App() {
     return (
@@ -13,6 +14,7 @@ function App() {
                 <Switch>
                     <Route path="/login" component={Login}></Route>
                     <Route path="/signup" component={Signup}></Route>
+                    <Route path="/contacts" component={Contact}></Route>
                     <Layout>
                         <Route path="/home" component={Home} />
                     </Layout>
