@@ -1,9 +1,8 @@
 const nodemailer = require("nodemailer");
 require("dotenv").config();
-
 const sendImageMail = (filename, email) => {
-    console.log(process.env.EMAIL2);
-    console.log(process.env.PASS2);
+    // console.log(process.env.EMAIL2);
+    // console.log(process.env.PASS2);
     const transporter = nodemailer.createTransport({
         service: process.env.SERVICE2,
         auth: {

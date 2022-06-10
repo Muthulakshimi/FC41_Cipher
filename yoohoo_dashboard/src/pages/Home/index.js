@@ -3,6 +3,7 @@ import { Image, Button, Modal } from "react-bootstrap";
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "../../App.css";
+import { Audio } from "../../components/Audio";
 // import { WebcamCapture } from "../../components/Webcam";
 
 import Webcam from "react-webcam";
@@ -36,13 +37,46 @@ const Home = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
+    const handleMail = () => {
+        // console.log("Mail clicked");
+        const mailData = {
+            userId: JSON.parse(localStorage.getItem("data")).id,
+            message:
+                "Emergency Here!!!. Please send some help to my shared location. ",
+        };
+        axios({
+            // Endpoint to send files
+            url: "http://localhost:8000/api/user/mail",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+            },
+
+            // Attaching the form data
+            data: mailData,
+        })
+            // Handle the response from backend here
+            .then((res) => {
+                localStorage.setItem(
+                    "location_response",
+                    JSON.stringify(res.data)
+                );
+                console.log(res.data);
+                // history.push("/login");
+            });
+    };
+
     const capture = useCallback(() => {
         const imageSrc = webcamRef.current.getScreenshot();
         setImage(imageSrc);
         console.log(imageSrc);
         const file = DataURIToBlob(imageSrc);
+        const file1 = new File([file], "photo.jpg", {
+            lastModified: 1534584790000,
+        });
+        // console.log(file1);
         const formData = new FormData();
-        formData.append("file", file);
+        formData.append("file", file1);
         formData.append("userId", JSON.parse(localStorage.getItem("data")).id);
         axios({
             // Endpoint to send files
@@ -74,6 +108,12 @@ const Home = () => {
             // console.log("Latitude is :", position.coords.latitude);
             // console.log("Longitude is :", position.coords.longitude);
         });
+        // axios
+        //     .get("http://localhost:8000/api/public/audios/alertAudio.mp3")
+        //     .then((resp) => {
+        //         console.log(resp.data);
+        //         setSrc(resp.data);
+        //     });
     }, []);
 
     const handleUpload = (e) => {
@@ -93,6 +133,9 @@ const Home = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
             },
 
             // Attaching the form data
@@ -136,25 +179,19 @@ const Home = () => {
                 >
                     Location
                 </Button>
-
                 {/* <button onClick={playAudio}>
                     <span>Play Audio</span>
                 </button> */}
-
-                <Button
-                    variant="primary"
-                    onClick={() => {
-                        new Audio("assets/audios/alertAudio.mp3").play();
-                    }}
-                >
-                    {" "}
-                    Play Audio{" "}
-                </Button>
-
+                <Audio />
                 <Button variant="primary" onClick={handleShow}>
-                    Launch demo modal
+                    Camera
                 </Button>
-
+                <Button variant="primary" onClick={handleMail}>
+                    Mail
+                </Button>
+                <Button variant="primary" href="tel:+919876543210">
+                    Call
+                </Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Camera</Modal.Title>
@@ -180,26 +217,6 @@ const Home = () => {
                         </Button>
                     </Modal.Footer>
                 </Modal>
-
-                {/* <Webcam
-                    audio={false}
-                    height={300}
-                    screenshotFormat="image/jpeg"
-                    width={300}
-                    videoConstraints={videoConstraints}
-                >
-                    {({ getScreenshot }) => (
-                        <button
-                            onClick={() => {
-                                const imageSrc = getScreenshot();
-                                setImage(imageSrc);
-                                // console.log(image)
-                            }}
-                        >
-                            Capture photo
-                        </button>
-                    )}
-                </Webcam> */}
             </div>
         </div>
     );

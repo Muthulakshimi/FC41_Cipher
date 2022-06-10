@@ -19,7 +19,8 @@ app.get("/another", (req, res) => {
     res.end("Its running here also");
 });
 
-app.use("/api/public/", express.static("/public/evidence"));
+app.use("/api/public/", express.static("public/evidence"));
+app.use("/api/public/audios", express.static("public/audios"));
 app.use("/api/user", userRoutes);
 app.use("/api/evidence", evidenceRoutes);
 app.use("/api/contact", contactRoutes);
