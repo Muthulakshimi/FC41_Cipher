@@ -2,6 +2,9 @@ const User = require("../models/userModel");
 const asycnHandler = require("express-async-handler");
 const bcrypt = require("bcrypt");
 const generateToken = require("../utils/generateToken");
+const generateLocation = require("../utils/generateLocation");
+const { sendMessageMail } = require("../utils/sendMail");
+const Contact = require("../models/contactModel");
 
 const login = asycnHandler(async (req, res) => {
     try {
@@ -84,4 +87,27 @@ const userSignup = asycnHandler(async (req, res) => {
     }
 });
 
-module.exports = { userSignup, login };
+const getUserLocation = asycnHandler(async (req, res) => {
+    try {
+        const { userId, lat, long, message } = req.body;
+        if (!lat || !long || !message) {
+            res.status(400).json({
+                message: "Error in sending current location!!!",
+            });
+        }
+        const location = generateLocation(lat, long);
+        const contacts = await Contact.find({ userId: userId });
+        // console.log(contacts);
+        var email = contacts.map((contact) => contact.email);
+        sendMessageMail(message, location, email);
+        res.status(200).json({
+            message: location,
+        });
+    } catch (error) {
+        res.status(400).json({
+            error: "Can't get user location!!!",
+        });
+    }
+});
+
+module.exports = { userSignup, login, getUserLocation };

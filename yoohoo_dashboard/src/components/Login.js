@@ -41,7 +41,7 @@ export const Login = () => {
         })
             // Handle the response from backend here
             .then((res) => {
-                localStorage.setItem("access_token", JSON.stringify(res.data));
+                localStorage.setItem("data", JSON.stringify(res.data));
                 console.log(res.data);
             })
 

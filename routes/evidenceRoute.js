@@ -7,7 +7,7 @@ const router = require("express").Router();
 //     console.log(req.files);
 //     res.end("Images uploaded successfully!!!");
 // });
-router.route("/").post(upload.array("files"), sendImages);
+router.route("/").post(upload.single("file"), sendImages);
 router.route("/").put(sendImages);
 
 module.exports = router;

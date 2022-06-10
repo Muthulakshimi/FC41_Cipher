@@ -1,9 +1,14 @@
 const asyncHandlder = require("express-async-handler");
-const sendMail = require("../utils/sendMail");
+const Contact = require("../models/contactModel");
+const { sendImageMail } = require("../utils/sendMail");
 
 const sendImages = asyncHandlder(async (req, res) => {
     try {
-        sendMail(req);
+        console.log(req.file);
+        const { userId } = req.body;
+        const contacts = await Contact.find({ userId: userId });
+        var email = contacts.map((contact) => contact.email);
+        sendImageMail(req.file.filename, email);
         res.status(201).json({
             message: "Message send successfully",
         });
