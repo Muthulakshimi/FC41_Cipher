@@ -55,6 +55,7 @@ export const Signup = () => {
                 localStorage.setItem("data", JSON.stringify(res.data));
                 console.log(res.data);
                 // history.push("/login");
+                return <Redirect to="/login" />;
             })
 
             // Catch errors if any
