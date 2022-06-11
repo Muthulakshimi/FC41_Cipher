@@ -25,10 +25,16 @@ footer {
 
 .styledButton {
     color: #fff;
-    background-color: #0d6efd;
-    border-color: #0d6efd;
+    background-color: #a0e20a !important;
+    border-color: #a0e20a !important;
     font-size: 30px !important;
     width: 4.5rem !important;
     padding: 15px !important;
     border-radius: 50% !important;
+}
+
+.styledButton:hover {
+    color: #fff;
+    background-color: #a0e20a !important;
+    border-color: #a0e20a !important;
 }
