@@ -9,10 +9,13 @@ const protect = asyncHandler(async (req, res, next) => {
         req.headers.authorization.startsWith("Bearer")
     ) {
         try {
-            const token = req.headers.authorization.split(" ")[1];
-            // console.log(token);
-            const decode = jwt.verify(token, process.env.JWT_KEY);
-            req.user = await User.findById(JSON.parse(decode));
+            token = req.headers.authorization.split(" ")[1];
+            const decode = await jwt.verify(token, process.env.JWT_KEY);
+            // console.log(decode);
+            req.user = await User.findById(JSON.parse(decode)).select(
+                "-password"
+            );
+            // console.log(req.user);
             if (!req.user) {
                 res.status(404).json({
                     status: false,
@@ -20,7 +23,7 @@ const protect = asyncHandler(async (req, res, next) => {
                 });
             }
             next();
-        } catch (error) {
+        } catch (err) {
             res.status(401).json({
                 status: false,
                 message: "Token failed!!!",

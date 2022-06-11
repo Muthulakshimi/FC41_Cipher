@@ -1,17 +1,40 @@
 import React from "react";
-import { Image, Button, Modal } from "react-bootstrap";
+import { Button, Modal } from "react-bootstrap";
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "../../App.css";
-import { Audio } from "../../components/Audio";
+import { HiOutlineLocationMarker } from "react-icons/hi";
+import { BiCamera } from "react-icons/bi";
+import { FiPhoneCall, FiMail } from "react-icons/fi";
+import { CgDanger } from "react-icons/cg";
+import "../../assets/button.css";
 // import { WebcamCapture } from "../../components/Webcam";
 
 import Webcam from "react-webcam";
 
 const Home = () => {
+    const start = () => {
+        // let audio = new Audio(
+        //     "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
+        // );
+        // audio.play();
+        document.querySelector("audio").play();
+    };
     // Location
     const [lat, setLat] = useState("");
     const [long, setLong] = useState("");
+    const FACING_MODE_USER = "user";
+    const FACING_MODE_ENVIRONMENT = "environment";
+
+    const [facingMode, setFacingMode] = useState(FACING_MODE_USER);
+
+    const handleCameraSwitch = useCallback(() => {
+        setFacingMode((prevState) =>
+            prevState === FACING_MODE_USER
+                ? FACING_MODE_ENVIRONMENT
+                : FACING_MODE_USER
+        );
+    }, []);
 
     function DataURIToBlob(dataURI) {
         const splitDataURI = dataURI.split(",");
@@ -41,6 +64,8 @@ const Home = () => {
         // console.log("Mail clicked");
         const mailData = {
             userId: JSON.parse(localStorage.getItem("data")).id,
+            lat: lat,
+            long: long,
             message:
                 "Emergency Here!!!. Please send some help to my shared location. ",
         };
@@ -50,6 +75,9 @@ const Home = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
             },
 
             // Attaching the form data
@@ -84,13 +112,17 @@ const Home = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
             },
 
             // Attaching the form data
             data: formData,
         }).then((res) => {
             // localStorage.setItem("data", JSON.stringify(res.data));
-            console.log(res.data);
+            // console.log(res.data);
+            window.location.reload();
             // history.push("/login");
         });
     }, [webcamRef, setImage]);
@@ -98,7 +130,7 @@ const Home = () => {
     const videoConstraints = {
         width: 1280,
         height: 720,
-        facingMode: "user",
+        facingMode: FACING_MODE_USER,
     };
 
     useEffect(() => {
@@ -116,9 +148,7 @@ const Home = () => {
         //     });
     }, []);
 
-    const handleUpload = (e) => {
-        e.preventDefault();
-
+    const handleUpload = () => {
         let formData = JSON.stringify({
             userId: JSON.parse(localStorage.getItem("data")).id,
             lat: lat,
@@ -165,7 +195,7 @@ const Home = () => {
     };
 
     return (
-        <div>
+        <div className="d-flex justify-content-center align-items-center">
             <div id="images-container">
                 {/* <Image
                     src="/assets/images/imgsave.jpg"
@@ -173,24 +203,37 @@ const Home = () => {
                     id="small-image"
                 ></Image> */}
                 <Button
+                    className="button-top-left"
                     variant="primary"
                     type="submit"
-                    onClick={(e) => handleUpload(e)}
+                    onClick={(e) => {
+                        e.preventDefault();
+                        handleUpload();
+                    }}
                 >
-                    Location
+                    <HiOutlineLocationMarker />
                 </Button>
                 {/* <button onClick={playAudio}>
                     <span>Play Audio</span>
                 </button> */}
-                <Audio />
+                <audio
+                    hidden
+                    src={
+                        "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
+                    }
+                    controls
+                />
                 <Button variant="primary" onClick={handleShow}>
-                    Camera
+                    <BiCamera />
+                </Button>
+                <Button variant="primary" onClick={start}>
+                    <CgDanger />
                 </Button>
                 <Button variant="primary" onClick={handleMail}>
-                    Mail
+                    <FiMail />
                 </Button>
                 <Button variant="primary" href="tel:+919876543210">
-                    Call
+                    <FiPhoneCall />
                 </Button>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
@@ -204,13 +247,19 @@ const Home = () => {
                             height={300}
                             ref={webcamRef}
                             screenshotFormat="image/jpeg"
-                            width={300}
-                            videoConstraints={videoConstraints}
+                            width={450}
+                            videoConstraints={{
+                                ...videoConstraints,
+                                facingMode,
+                            }}
                         />
                     </Modal.Body>
                     <Modal.Footer>
                         <Button variant="secondary" onClick={handleClose}>
                             Close
+                        </Button>
+                        <Button variant="warning" onClick={handleCameraSwitch}>
+                            Switch camera
                         </Button>
                         <Button variant="primary" onClick={capture}>
                             Capture and Send

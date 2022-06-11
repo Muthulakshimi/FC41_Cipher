@@ -1,10 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
-import { Redirect } from "react-router-dom";
+import { Redirect, useHistory } from "react-router-dom";
+import useForceUpdate from "use-force-update";
 
 export const Signup = () => {
+    const history = useHistory();
+    const forceUpdate = useForceUpdate();
     const [name, setName] = useState("");
     const [email, setEmail] = useState("");
     const [phone, setPhone] = useState("");
@@ -23,8 +26,14 @@ export const Signup = () => {
         setPassword(e.target.value);
     };
 
-    const handleUpload = (e) => {
-        e.preventDefault();
+    useEffect(() => {
+        if (localStorage.getItem("data")) {
+            history.push("/home");
+            forceUpdate();
+        }
+    });
+
+    const handleUpload = () => {
         // let newfiles = this.state.newfiles;
 
         // let formData = new FormData();
@@ -52,9 +61,10 @@ export const Signup = () => {
         })
             // Handle the response from backend here
             .then((res) => {
-                localStorage.setItem("data", JSON.stringify(res.data));
+                // localStorage.setItem("data", JSON.stringify(res.data));
                 console.log(res.data);
-                // history.push("/login");
+                history.push("/login");
+                forceUpdate();
                 return <Redirect to="/login" />;
             })
 
@@ -122,7 +132,10 @@ export const Signup = () => {
                     <Button
                         variant="primary"
                         type="submit"
-                        onClick={(e) => handleUpload(e)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUpload();
+                        }}
                     >
                         Submit
                     </Button>

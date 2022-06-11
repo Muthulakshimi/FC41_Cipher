@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Form, Button, Container } from "react-bootstrap";
 import axios from "axios";
 import { useState } from "react";
+import { useHistory } from "react-router-dom";
+import useForceupdate from "use-force-update";
 
 export const Login = () => {
+    const history = useHistory();
+    const forceUpdate = useForceupdate();
     const [email, setEmail] = useState("");
     const [password, setPassword] = useState("");
 
@@ -14,8 +18,14 @@ export const Login = () => {
         setPassword(e.target.value);
     };
 
-    const handleUpload = (e) => {
-        e.preventDefault();
+    // useEffect(() => {
+    //     if (localStorage.getItem("data")) {
+    //         history.push("/home");
+    //         forceUpdate();
+    //     }
+    // });
+
+    const handleUpload = () => {
         // let newfiles = this.state.newfiles;
 
         // let formData = new FormData();
@@ -43,6 +53,9 @@ export const Login = () => {
             .then((res) => {
                 localStorage.setItem("data", JSON.stringify(res.data));
                 console.log(res.data);
+                history.push("/home");
+                // forceUpdate();
+                window.location.reload();
             })
 
             // Catch errors if any
@@ -85,7 +98,10 @@ export const Login = () => {
                     <Button
                         variant="primary"
                         type="submit"
-                        onClick={(e) => handleUpload(e)}
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUpload();
+                        }}
                     >
                         Submit
                     </Button>

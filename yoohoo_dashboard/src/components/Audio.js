@@ -1,10 +1,16 @@
 import React from "react";
-import mp3 from "../audios/alertAudio.mp3";
 
 export const Audio = () => {
     return (
         <div>
-            <audio src={mp3} controls autoPlay />
+            <audio
+                hidden
+                src={
+                    "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
+                }
+                controls
+                autoPlay
+            />
         </div>
     );
 };

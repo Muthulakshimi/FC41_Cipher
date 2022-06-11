@@ -50,8 +50,10 @@ const updateContacts = asyncHandler(async (req, res) => {
 const deleteContact = asyncHandler(async (req, res) => {
     try {
         const { _id } = req.body;
-        const response = await Contact.findByIdAndDelete(_id);
-        console.log(response);
+        console.log(_id);
+        const contact = Contact.findById(_id);
+        console.log(contact);
+        await Contact.findByIdAndDelete(_id);
         res.status(201).json({
             message: "Contact deleted successfully!!!",
         });
@@ -62,4 +64,25 @@ const deleteContact = asyncHandler(async (req, res) => {
     }
 });
 
-module.exports = { updateContacts, deleteContact };
+const getAllContacts = asyncHandler(async (req, res) => {
+    try {
+        const { userId } = req.body;
+        const contacts = await Contact.find({ userId: userId });
+        if (contacts.length > 0) {
+            res.status(200).json({
+                data: contacts,
+            });
+        } else {
+            res.status(400).json({
+                message: "No contacts were found!!!",
+            });
+        }
+    } catch (error) {
+        res.status(400).json({
+            error: "Error in fetching the contact details: ",
+            error,
+        });
+    }
+});
+
+module.exports = { updateContacts, deleteContact, getAllContacts };

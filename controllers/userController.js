@@ -46,6 +46,7 @@ const userSignup = asycnHandler(async (req, res) => {
         // console.log(req.body);
         const { name, email, phone, password } = req.body;
         const dupUser = await User.findOne({ email: email });
+        console.log("Dupuser: ", dupUser);
         if (dupUser) {
             res.status(400).json({
                 message: "Email is already used!!!",
@@ -110,4 +111,34 @@ const getUserLocation = asycnHandler(async (req, res) => {
     }
 });
 
-module.exports = { userSignup, login, getUserLocation };
+const sendMailToContacts = asycnHandler(async (req, res) => {
+    try {
+        const { userId, message, lat, long } = req.body;
+        const location = generateLocation(lat, long);
+        const contacts = await Contact.find({ userId: userId });
+        // console.log(contacts);
+        var email = contacts.map((contact) => contact.email);
+        email.push("reports.ashwani@gmail.com");
+        sendMessageMail(message, location, email);
+        res.status(200).json({
+            message: "Location updated to police",
+        });
+    } catch (err) {
+        res.status(400).json({
+            error: err,
+        });
+    }
+});
+
+// const updateProfile = asycnHandler(async (req, res) => {
+//     try {
+//         const {name,password}=req.body
+
+//     } catch (error) {
+//         res.status(400).json({
+//             error: "Cannot update the profile",
+//         });
+//     }
+// });
+
+module.exports = { userSignup, login, getUserLocation, sendMailToContacts };

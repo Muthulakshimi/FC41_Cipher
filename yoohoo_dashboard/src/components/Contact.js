@@ -1,19 +1,51 @@
 import React from "react";
-import { Form, Button, Container, Row, Col, Modal } from "react-bootstrap";
+import { Form, Button, Modal, Card, CardGroup } from "react-bootstrap";
 import axios from "axios";
-import { useState } from "react";
-import { NavbarComponent } from "./NavbarComponent";
+import { useState, useEffect } from "react";
 
 export const Contact = () => {
+    const [contacts, setContacts] = useState();
+    useEffect(() => {
+        axios({
+            // Endpoint to send files
+            url: "http://localhost:8000/api/contact",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
+            },
+            data: { userId: JSON.parse(localStorage.getItem("data")).id },
+        })
+            // Handle the response from backend here
+            .then((res) => {
+                // localStorage.setItem(
+                //     "location_response",
+                //     JSON.stringify(res.data)
+                // );
+                console.log(res.data);
+                setContacts(res.data);
+            })
+
+            // Catch errors if any
+            .catch((error) => {
+                if (error.response) {
+                    this.errors(error.response.message);
+                } else if (error.request) {
+                    console.log("error.request");
+                } else {
+                    console.log("Error", error);
+                }
+                console.log("rejected");
+            });
+    }, []);
+
     const [contact, setContact] = useState("");
     const [name, setName] = useState("");
     const [relation, setRelation] = useState("");
-    const [contact2, setContact2] = useState("");
-    const [contact3, setContact3] = useState("");
 
     const [email, setEmail] = useState("");
-    const [email2, setEmail2] = useState("");
-    const [email3, setEmail3] = useState("");
 
     const [show, setShow] = useState(false);
 
@@ -30,66 +62,8 @@ export const Contact = () => {
         setRelation(e.target.value);
     };
 
-    const onChangeContact2 = (e) => {
-        setContact2(e.target.value);
-    };
-    const onChangeContact3 = (e) => {
-        setContact3(e.target.value);
-    };
-
     const onChangeEmail = (e) => {
         setEmail(e.target.value);
-    };
-    const onChangeEmail2 = (e) => {
-        setEmail2(e.target.value);
-    };
-    const onChangeEmail3 = (e) => {
-        setEmail3(e.target.value);
-    };
-
-    const handleUpload = (e) => {
-        e.preventDefault();
-        // let newfiles = this.state.newfiles;
-
-        // let formData = new FormData();
-
-        // // Adding files to the formdata
-        // formData.append("image", newfiles);
-        // formData.append("name", "Name");
-        let formData = JSON.stringify({
-            userId: JSON.parse(localStorage.getItem("data")).id,
-            phones: [contact2, contact3],
-            emails: [email2, email3],
-        });
-        console.log(formData);
-        axios({
-            // Endpoint to send files
-            url: "http://localhost:8000/api/contact/update",
-            method: "POST",
-            headers: {
-                "Content-Type": "application/json",
-            },
-
-            // Attaching the form data
-            data: formData,
-        })
-            // Handle the response from backend here
-            .then((res) => {
-                // localStorage.setItem("access_token",res.data.access_token);
-                console.log(res.data);
-            })
-
-            // Catch errors if any
-            .catch((error) => {
-                if (error.response) {
-                    this.errors(error.response.message);
-                } else if (error.request) {
-                    console.log("error.request");
-                } else {
-                    console.log("Error", error);
-                }
-                console.log("rejected");
-            });
     };
 
     const handleSubmit = () => {
@@ -106,6 +80,9 @@ export const Contact = () => {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
             },
 
             // Attaching the form data
@@ -130,14 +107,41 @@ export const Contact = () => {
             });
     };
 
+    const handleDelete = (itemId) => {
+        console.log(itemId);
+        const contactData = {
+            _id: itemId,
+        };
+        axios({
+            // Endpoint to send files
+            url: "http://localhost:8000/api/contact/delete",
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json",
+                Authorization: `Bearer ${
+                    JSON.parse(localStorage.getItem("data")).token
+                }`,
+            },
+
+            // Attaching the form data
+            data: contactData,
+        })
+            // Handle the response from backend here
+            .then((res) => {
+                // localStorage.setItem("access_token",res.data.access_token);
+                console.log(res.data);
+                window.location.reload();
+            });
+    };
+
     return (
         <div>
-            <NavbarComponent />
-            <h3>Contacts Form</h3>
-
-            <Button variant="primary" onClick={handleShow}>
-                Add Contact Information
-            </Button>
+            <h1 align="center">Contacts Form</h1>
+            <div className="text-center pb-2">
+                <Button variant="primary" onClick={handleShow}>
+                    Add New Contact Information
+                </Button>
+            </div>
 
             <Modal show={show} onHide={handleClose}>
                 <Modal.Header closeButton>
@@ -191,72 +195,8 @@ export const Contact = () => {
                     </Button>
                 </Modal.Footer>
             </Modal>
-            <Container>
+            {/* <Container>
                 <Form>
-                    <Row>
-                        <Col>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicContact2"
-                            >
-                                <Form.Label>Contact 2</Form.Label>
-                                <Form.Control
-                                    type="tel"
-                                    maxlength="10"
-                                    value={contact2}
-                                    onChange={onChangeContact2}
-                                    placeholder="Enter Contact 2"
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicEmail"
-                            >
-                                <Form.Label>Email 2</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    value={email2}
-                                    onChange={onChangeEmail2}
-                                    placeholder="Enter Email 2"
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-
-                    <Row>
-                        <Col>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicContact3"
-                            >
-                                <Form.Label>Contact 3</Form.Label>
-                                <Form.Control
-                                    type="tel"
-                                    maxlength="10"
-                                    value={contact3}
-                                    onChange={onChangeContact3}
-                                    placeholder="Enter Contact 3"
-                                />
-                            </Form.Group>
-                        </Col>
-                        <Col>
-                            <Form.Group
-                                className="mb-3"
-                                controlId="formBasicEmail"
-                            >
-                                <Form.Label>Email 3</Form.Label>
-                                <Form.Control
-                                    type="email"
-                                    value={email3}
-                                    onChange={onChangeEmail3}
-                                    placeholder="Enter Email 3"
-                                />
-                            </Form.Group>
-                        </Col>
-                    </Row>
-
                     <Button
                         variant="primary"
                         type="submit"
@@ -265,7 +205,34 @@ export const Contact = () => {
                         Submit
                     </Button>
                 </Form>
-            </Container>
+            </Container> */}
+            <CardGroup>
+                {contacts &&
+                    contacts.data.map((item) => {
+                        return (
+                            <Card style={{ width: "15rem", margin: "10px" }}>
+                                <Card.Body>
+                                    <Card.Title>
+                                        {item.name} ( {item.relation} )
+                                    </Card.Title>
+                                    <Card.Text>
+                                        Phone : {item.phone} <br /> Email :{" "}
+                                        {item.email}
+                                    </Card.Text>
+                                    <Button
+                                        variant="danger"
+                                        onClick={(e) => {
+                                            e.preventDefault();
+                                            handleDelete(item._id);
+                                        }}
+                                    >
+                                        Delete
+                                    </Button>
+                                </Card.Body>
+                            </Card>
+                        );
+                    })}
+            </CardGroup>
         </div>
     );
 };
