@@ -190,7 +190,13 @@ export const Contact = () => {
                     <Button variant="secondary" onClick={handleClose}>
                         Close
                     </Button>
-                    <Button variant="primary" onClick={handleSubmit}>
+                    <Button
+                        variant="primary"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleSubmit();
+                        }}
+                    >
                         Save Changes
                     </Button>
                 </Modal.Footer>

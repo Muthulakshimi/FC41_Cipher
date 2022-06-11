@@ -13,6 +13,11 @@ import "../../assets/button.css";
 import Webcam from "react-webcam";
 
 const Home = () => {
+    const myStyle = {
+        height: "85vh",
+        position: "relative",
+        width: "100%",
+    };
     const start = () => {
         // let audio = new Audio(
         //     "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
@@ -197,11 +202,7 @@ const Home = () => {
     return (
         <div
             className="d-flex justify-content-center align-items-center"
-            style={{
-                height: "85vh",
-                position: "relative",
-                width: "100%",
-            }}
+            style={myStyle}
         >
             <div id="images-container">
                 {/* <Image

@@ -72,8 +72,8 @@ export const Login = () => {
     };
 
     return (
-        <div>
-            <h3>Login Form</h3>
+        <div align="center">
+            <h1 className="text-center mb-4">Login Form</h1>
             <Container>
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicEmail">
@@ -83,6 +83,7 @@ export const Login = () => {
                             value={email}
                             onChange={onChangeUserEmail}
                             placeholder="Enter email"
+                            style={{ width: "400px" }}
                         />
                     </Form.Group>
 
@@ -93,6 +94,7 @@ export const Login = () => {
                             value={password}
                             onChange={onChangeUserPassword}
                             placeholder="Password"
+                            style={{ width: "400px" }}
                         />
                     </Form.Group>
                     <Button

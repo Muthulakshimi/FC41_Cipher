@@ -64,8 +64,9 @@ export const Signup = () => {
                 // localStorage.setItem("data", JSON.stringify(res.data));
                 console.log(res.data);
                 history.push("/login");
-                forceUpdate();
-                return <Redirect to="/login" />;
+                // forceUpdate();
+                // return <Redirect to="/login" />;
+                window.location.reload();
             })
 
             // Catch errors if any
@@ -82,9 +83,11 @@ export const Signup = () => {
     };
 
     return (
-        <div>
-            <h3>Signup Form</h3>
+        <div className="mt-4">
             <Container>
+                <div className="d-flex justify-content-center align-items-center">
+                    <h3>Signup Form</h3>
+                </div>
                 <Form>
                     <Form.Group className="mb-3" controlId="formBasicUserName">
                         <Form.Label>User Name</Form.Label>
