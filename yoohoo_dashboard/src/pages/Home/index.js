@@ -1,5 +1,5 @@
 import React from "react";
-import { Button, Modal } from "react-bootstrap";
+import { Image, Button, Modal } from "react-bootstrap";
 import { useState, useEffect, useRef, useCallback } from "react";
 import axios from "axios";
 import "../../App.css";
@@ -195,46 +195,77 @@ const Home = () => {
     };
 
     return (
-        <div className="d-flex justify-content-center align-items-center">
+        <div
+            className="d-flex justify-content-center align-items-center"
+            style={{
+                height: "85vh",
+                position: "relative",
+                width: "100%",
+            }}
+        >
             <div id="images-container">
                 {/* <Image
                     src="/assets/images/imgsave.jpg"
                     alt="Image"
                     id="small-image"
                 ></Image> */}
-                <Button
-                    className="button-top-left"
-                    variant="primary"
-                    type="submit"
-                    onClick={(e) => {
-                        e.preventDefault();
-                        handleUpload();
-                    }}
-                >
-                    <HiOutlineLocationMarker />
-                </Button>
-                {/* <button onClick={playAudio}>
+                <div>
+                    <Button
+                        className="button-top-left styledButton me-5"
+                        variant="primary"
+                        type="submit"
+                        onClick={(e) => {
+                            e.preventDefault();
+                            handleUpload();
+                        }}
+                    >
+                        <HiOutlineLocationMarker />
+                    </Button>
+                    {/* <button onClick={playAudio}>
                     <span>Play Audio</span>
                 </button> */}
-                <audio
-                    hidden
-                    src={
-                        "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
-                    }
-                    controls
-                />
-                <Button variant="primary" onClick={handleShow}>
-                    <BiCamera />
-                </Button>
-                <Button variant="primary" onClick={start}>
-                    <CgDanger />
-                </Button>
-                <Button variant="primary" onClick={handleMail}>
-                    <FiMail />
-                </Button>
-                <Button variant="primary" href="tel:+919876543210">
-                    <FiPhoneCall />
-                </Button>
+                    <audio
+                        hidden
+                        src={
+                            "https://cdn.pixabay.com/download/audio/2022/02/23/audio_c75a95568e.mp3?filename=police-siren-21498.mp3"
+                        }
+                        controls
+                    />
+                    <Button
+                        className="styledButton"
+                        variant="primary"
+                        onClick={handleShow}
+                    >
+                        <BiCamera />
+                    </Button>
+                </div>
+                <br />
+                <div className="ms-2">
+                    <Button
+                        className="styledButton ms-5"
+                        variant="primary"
+                        onClick={start}
+                    >
+                        <CgDanger />
+                    </Button>
+                </div>
+                <br />
+                <div>
+                    <Button
+                        className="styledButton me-5"
+                        variant="primary"
+                        onClick={handleMail}
+                    >
+                        <FiMail />
+                    </Button>
+                    <Button
+                        className="styledButton"
+                        variant="primary"
+                        href="tel:+919876543210"
+                    >
+                        <FiPhoneCall />
+                    </Button>
+                </div>
                 <Modal show={show} onHide={handleClose}>
                     <Modal.Header closeButton>
                         <Modal.Title>Camera</Modal.Title>
