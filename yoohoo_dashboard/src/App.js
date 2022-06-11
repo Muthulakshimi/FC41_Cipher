@@ -9,7 +9,7 @@ import { Contact } from "./components/Contact";
 function App() {
     return (
         <BrowserRouter>
-            <div className="App">
+            <div className="App" style={{ background: "black" }}>
                 {/* <Header /> */}
                 <Switch>
                     <Route path="/login" component={Login} />
