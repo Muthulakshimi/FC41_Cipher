@@ -5,8 +5,8 @@
     "main": "index.js",
     "scripts": {
         "test": "echo \"Error: no test specified\" && exit 1",
-        "prod": "concurrently \"node server\" \"npm run start\"",
-        "start": "cd yoohoo_dashboard && npm start"
+        "start": "concurrently \"node server\" \"npm run prod\"",
+        "prod": "cd yoohoo_dashboard && npm start"
     },
     "keywords": [],
     "author": "",
