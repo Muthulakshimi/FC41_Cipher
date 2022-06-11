@@ -38,3 +38,8 @@ footer {
     background-color: #a0e20a !important;
     border-color: #a0e20a !important;
 }
+
+
+body{
+    background-image: url("/assets/images/background.png");
+}
